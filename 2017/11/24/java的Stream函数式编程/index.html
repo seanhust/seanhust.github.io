@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="java 的Stream函数式编程这两天学习了一下java的函数式编程，这也是java8的特性，尽管java8增加了lambda表达式，能够实现部分函数式编程的功能（函数式编程简单来说就是对于相同的输入，一定会产生相同的输出，与状态无关，其它知识请查阅相关资料），但是对于这个面向对象的语言来说，这个改动有很多妥协，当然支持的功能也有限。接下来通过介绍java的Stream库来了解java的函数式编">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sean，点滴">
+<meta property="og:url" content="http://seanhust.github.io/2017/11/24/java的Stream函数式编程/index.html">
+<meta property="og:site_name" content="Sean，点滴">
+<meta property="og:description" content="java 的Stream函数式编程这两天学习了一下java的函数式编程，这也是java8的特性，尽管java8增加了lambda表达式，能够实现部分函数式编程的功能（函数式编程简单来说就是对于相同的输入，一定会产生相同的输出，与状态无关，其它知识请查阅相关资料），但是对于这个面向对象的语言来说，这个改动有很多妥协，当然支持的功能也有限。接下来通过介绍java的Stream库来了解java的函数式编">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-24T13:29:32.507Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sean，点滴">
+<meta name="twitter:description" content="java 的Stream函数式编程这两天学习了一下java的函数式编程，这也是java8的特性，尽管java8增加了lambda表达式，能够实现部分函数式编程的功能（函数式编程简单来说就是对于相同的输入，一定会产生相同的输出，与状态无关，其它知识请查阅相关资料），但是对于这个面向对象的语言来说，这个改动有很多妥协，当然支持的功能也有限。接下来通过介绍java的Stream库来了解java的函数式编">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://seanhust.github.io/2017/11/24/java的Stream函数式编程/"/>
+
+
+
+
+
+  <title> | Sean，点滴</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sean，点滴</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录生活，记录世界</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-主页"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-关于我"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-笔记"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://seanhust.github.io/2017/11/24/java的Stream函数式编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sean，点滴">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-24T21:29:32+08:00">
+                2017-11-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="java-的Stream函数式编程"><a href="#java-的Stream函数式编程" class="headerlink" title="java 的Stream函数式编程"></a>java 的Stream函数式编程</h3><p>这两天学习了一下java的函数式编程，这也是java8的特性，尽管java8增加了lambda表达式，能够实现部分函数式编程的功能（函数式编程简单来说就是对于相同的输入，一定会产生相同的输出，与状态无关，其它知识请查阅相关资料），但是对于这个面向对象的语言来说，这个改动有很多妥协，当然支持的功能也有限。接下来通过介绍java的Stream库来了解java的函数式编程。</p>
+<h4 id="1-怎么产生Stream"><a href="#1-怎么产生Stream" class="headerlink" title="1.怎么产生Stream"></a>1.怎么产生Stream</h4><p>流（Stream）可以看成一个存储数据的仓库，我们只关心需要什么，而不用关心怎么从仓库中得到这些东西。java很多API都能将数据转为Stream，比如我们可能需要得到某个目录下的所有文件（或者目录），那么可以使用<strong> Stream<path></path> </strong>来存储。Stream的产生更多的是通过IO流来得到的。直接调用stream()方法便可得到Stream，当然还可以直接通过调用Stream.of()实现流的构造</p>
+<pre><code>Stream&lt;String&gt; words = Stream.of(&quot;first&quot;,&quot;second&quot;,&quot;third&quot;);
+</code></pre><p>Stream接口还有两个静态方法用来创建流，  <strong> generate(Supplier<t> s) </t></strong>,所以我们可以通过</p>
+<pre><code>Stream&lt;double&gt; random = Stream.generate(Math:random);
+</code></pre><p>来得到随机数。</p>
+<h4 id="2-Stream怎么使用"><a href="#2-Stream怎么使用" class="headerlink" title="2.Stream怎么使用"></a>2.Stream怎么使用</h4><p>Stream里面的提供了很多API来处理流，通过一层的处理最后得到自己想要的流，先上一个实例，比如我需要得到一篇英语文章中的单词的长度大于10的单词的数量，使用filter()可以过滤得到结果。</p>
+<pre><code>int count = words.stream().filter(s -&gt; s.length &gt; 10).count()
+</code></pre><p>这个操作的思路明显，而且我们只需要关注想要的结果就可以了，不用再去写for循环来一个一个查找，<strong> s -&gt; s.length &gt; 10 </strong>就是一个简单的lambda表达式，s代表输入参数，这里就是stream里面的字符串，类型可以由编译器直接推断出来（因为words的类型为String），所有不用显示的指定,<br><strong> -&gt; </strong>是lambda表达式的标记，后面是具体的内容，因为只有一句话，所以没用{}括起来。意思是输出字符串的长度是否大于10，可能会有疑问？怎么看出 <strong> 是否 </strong>的意思呢？看一下filter的参数类型就知道，是一个<strong>Predicate&lt;? super T&gt; predicate</strong>，意思是返回是否满足给定的Predicate条件。最后一个<strong>count()</strong>就是将之前满足条件的全部加起来。这个操作是不是很简单明了，实现的具体实现的部分都是交给编译器自己去完成。</p>
+<p>当然，还有很多选择，过滤的操作，比如<strong>findFirst(),anyMatch()</strong>,这些都能筛选出我们想要的部分。具体的每一个API可以查文档来得到。</p>
+<h4 id="3-怎么得到想要的结果"><a href="#3-怎么得到想要的结果" class="headerlink" title="3.怎么得到想要的结果"></a>3.怎么得到想要的结果</h4><p>我们过滤完之后还是一个流，很多情况下我们<strong>需要的是一个数字或者java的基本类型。比如前面的</strong>count()<strong>操作,Stream里面也有不少这样的方法，我们称之为规约的操作，比如</strong>min(),max(),reduce(),collect()<strong>,其中</strong>reduce(),collect()<strong>的功能很强大，可以得到很多自定义的结果。如果能掌握的话，java函数式编程也就掌握大半了。这里举一个简答的例子，比如我需要求总单词列表的总的字母的数量，采用</strong>reduce()**实现，（当然还有很多简便的方法）</p>
+<pre><code>Optional&lt;Integer&gt; sum = words.stream.reduce((x,y) -&gt; (x.length+y.length))
+</code></pre><p>这里的<strong>Optional<integer></integer></strong>可以简单的看成一个<strong>Integer</strong>，只不过这个类型提供了对<strong>null</strong>值时的保护措施。通过<strong>ifPresent()</strong>方法来选择性的执行。</p>
+<h4 id="4-一个函数式编程具体的例子："><a href="#4-一个函数式编程具体的例子：" class="headerlink" title="4.一个函数式编程具体的例子："></a>4.一个函数式编程具体的例子：</h4><p>能够实现将一个文本的单词读取出来，并且将单词流排序输出到列表当中。</p>
+<pre><code>package com.seanhust.eight;
+import java.io.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class Question1 {
+    public static void main(String[] args){
+        Path path = FileSystems.getDefault().getPath(&quot;&quot;);
+        List&lt;String&gt; wordsList = new ArrayList&lt;&gt;();
+        wordsList = ReadFileToWords.readFileToWords(path);
+        Stream&lt;String&gt; longString = wordsList.stream().sorted(Comparator.comparing(String::length,Comparator.reverseOrder()));
+        List&lt;String&gt; strings = longString.collect(Collectors.toList());
+    }
+}
+
+class ReadFileToWords{
+    public static List&lt;String&gt; readFileToWords(Path path){
+        List&lt;String&gt; wordsList = new ArrayList&lt;&gt;();
+        try(Scanner scan = new Scanner(path)){
+            while(scan.hasNext()) {
+                String[] line = scan.nextLine().split(&quot;[^a-zA-Z]&quot;);
+                for (String word : line) {
+                    if(!&quot;&quot;.equals(word.trim())) {
+                        wordsList.add(word.trim());
+                    }
+                }
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return wordsList;
+    }
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/24/浅谈java并发编程/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Sean" />
+            
+              <p class="site-author-name" itemprop="name">Sean</p>
+              <p class="site-description motion-element" itemprop="description">一只成长中的程序猿，一个追求梦想的年轻人</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#java-的Stream函数式编程"><span class="nav-number">1.</span> <span class="nav-text">java 的Stream函数式编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-怎么产生Stream"><span class="nav-number">1.1.</span> <span class="nav-text">1.怎么产生Stream</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Stream怎么使用"><span class="nav-number">1.2.</span> <span class="nav-text">2.Stream怎么使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-怎么得到想要的结果"><span class="nav-number">1.3.</span> <span class="nav-text">3.怎么得到想要的结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-一个函数式编程具体的例子："><span class="nav-number">1.4.</span> <span class="nav-text">4.一个函数式编程具体的例子：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sean</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

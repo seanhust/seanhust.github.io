@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="程序员应该知道的97件事系列（一）  有没有发现自己写代码经常出现各种各样的小错误，而且一改起来很多地方都要修改。最近在写的一个博客类网站，总是由于命名问题或者小的细节问题改的代码惨不忍睹。偶然看到这本《程序员应该知道的977件事》，里面有很多概括性的建议，先不妨研读一番，思考一下自己的不足，以后在工程中慢慢体会和运用某些建议。本系列感悟分为10集，每集谈谈对其中10篇的感悟（最后一集就是7篇了）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sean，点滴">
+<meta property="og:url" content="http://seanhust.github.io/2017/11/24/程序员应该知道的97件事系列（一）/index.html">
+<meta property="og:site_name" content="Sean，点滴">
+<meta property="og:description" content="程序员应该知道的97件事系列（一）  有没有发现自己写代码经常出现各种各样的小错误，而且一改起来很多地方都要修改。最近在写的一个博客类网站，总是由于命名问题或者小的细节问题改的代码惨不忍睹。偶然看到这本《程序员应该知道的977件事》，里面有很多概括性的建议，先不妨研读一番，思考一下自己的不足，以后在工程中慢慢体会和运用某些建议。本系列感悟分为10集，每集谈谈对其中10篇的感悟（最后一集就是7篇了）">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-24T13:23:59.556Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sean，点滴">
+<meta name="twitter:description" content="程序员应该知道的97件事系列（一）  有没有发现自己写代码经常出现各种各样的小错误，而且一改起来很多地方都要修改。最近在写的一个博客类网站，总是由于命名问题或者小的细节问题改的代码惨不忍睹。偶然看到这本《程序员应该知道的977件事》，里面有很多概括性的建议，先不妨研读一番，思考一下自己的不足，以后在工程中慢慢体会和运用某些建议。本系列感悟分为10集，每集谈谈对其中10篇的感悟（最后一集就是7篇了）">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://seanhust.github.io/2017/11/24/程序员应该知道的97件事系列（一）/"/>
+
+
+
+
+
+  <title> | Sean，点滴</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sean，点滴</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录生活，记录世界</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-主页"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-关于我"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-笔记"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://seanhust.github.io/2017/11/24/程序员应该知道的97件事系列（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sean，点滴">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-24T21:23:59+08:00">
+                2017-11-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="程序员应该知道的97件事系列（一）"><a href="#程序员应该知道的97件事系列（一）" class="headerlink" title="程序员应该知道的97件事系列（一）"></a>程序员应该知道的97件事系列（一）</h3><p>  有没有发现自己写代码经常出现各种各样的小错误，而且一改起来很多地方都要修改。最近在写的一个博客类网站，总是由于命名问题或者小的细节问题改的代码惨不忍睹。偶然看到这本《程序员应该知道的977件事》，里面有很多概括性的建议，先不妨研读一番，思考一下自己的不足，以后在工程中慢慢体会和运用某些建议。本系列感悟分为10集，每集谈谈对其中10篇的感悟（最后一集就是7篇了）。可能有些要点没有领会到位，望批评指正。</p>
+<hr>
+<h4 id="1-谨慎行动"><a href="#1-谨慎行动" class="headerlink" title="1.谨慎行动"></a>1.谨慎行动</h4><p>  有时候我们会为了追求进度从而写一些效率低下，甚至不够严密的代码。这些代码可能现阶段不会影响代码的正确性，但是在下一轮迭代或者一些特定的情况出现一些问题。比如之前在做一个应用时，需要用到图片上传的功能，操作是首先将浏览器上传的图片存到文件目录下中，然后进行一些操作，成功则将图片的URI地址存入数据库中，失败则直接告诉浏览器，很显然缺少了删除的操作，虽然不会造成程序崩溃，但是这是一个很不好的习惯。</p>
+<h4 id="2-函数式编程的原则"><a href="#2-函数式编程的原则" class="headerlink" title="2.函数式编程的原则"></a>2.函数式编程的原则</h4><p>  函数式编程在“多核”编程有比较广泛的应用，函数式编程有一个很重要的属性-引用透明性，即同样的输入会的到同样的输出。过程式的代码最重要的特点就是状态变量很多，由于某一个状态值的改变导致出现问题的情况屡见不鲜。所以使用函数式编程能大大减少这类问题。如若采用面向对象的方法，则因尽量接耦合，并且对变量进行检测，这样不仅在调试的时候能快速定位错误，而且能减少差错。</p>
+<h4 id="3-试试自己-“用户会怎么做”（你不能算是用户）"><a href="#3-试试自己-“用户会怎么做”（你不能算是用户）" class="headerlink" title="3.试试自己 “用户会怎么做”（你不能算是用户）"></a>3.试试自己 “用户会怎么做”（你不能算是用户）</h4><p>  有时候在写一些业务代码的时候，总是容易自以为的假设用户能按自己的想法操作，或者说前端的能够传递给我正确的数据。但是很多次都会因为某些数据不存在或者说没有检测某些数据的合法性导致出现了一系列的问题。当这些数据插进数据库之后很容易导致程序出现异常，然后重新构建数据库是十分麻烦的一件事。特别是服务上线之后，那由于脏数据的插入导致的损失是巨大的。所以在代码尽量检测数据的合法性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if(map.get(&quot;username&quot;) == null)&#123;</span><br><span class="line">      ...</span><br><span class="line">  &#125;else&#123;</span><br><span class="line">      ...</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="4-编码的自动化"><a href="#4-编码的自动化" class="headerlink" title="4.编码的自动化"></a>4.编码的自动化</h4><p>  首先我想说一说前后端的交互问题，前期一定一定要设计的十分清楚，把数据的格式和变量的命名完全统一在编写接口代码，特别不是那种十分正规的项目很容易大概说一下就开始各干各的，等改起来就不是一件轻松事。比如那个博客类网站，采用了MVC的设计，之前一直用的都是直接传与实体类变量相同的json数据，但是前端后来觉得这样受后台命名限制不太好，导致需要重新从request中一个一个将变量读取出来。改成原编码风格的话，需要动的文件很多，所以数据的检测放在control层里面先检测一下，之前都是放在service里面检测。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/24/浅谈java并发编程/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Sean" />
+            
+              <p class="site-author-name" itemprop="name">Sean</p>
+              <p class="site-description motion-element" itemprop="description">一只成长中的程序猿，一个追求梦想的年轻人</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序员应该知道的97件事系列（一）"><span class="nav-number">1.</span> <span class="nav-text">程序员应该知道的97件事系列（一）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-谨慎行动"><span class="nav-number">1.1.</span> <span class="nav-text">1.谨慎行动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-函数式编程的原则"><span class="nav-number">1.2.</span> <span class="nav-text">2.函数式编程的原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-试试自己-“用户会怎么做”（你不能算是用户）"><span class="nav-number">1.3.</span> <span class="nav-text">3.试试自己 “用户会怎么做”（你不能算是用户）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-编码的自动化"><span class="nav-number">1.4.</span> <span class="nav-text">4.编码的自动化</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sean</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
