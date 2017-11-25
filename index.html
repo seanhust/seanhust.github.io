@@ -333,8 +333,15 @@
       
         
           
-            
           
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/25/朝着未来努力/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -452,9 +459,16 @@
       
         
           
-            <h3 id="java的并行编程"><a href="#java的并行编程" class="headerlink" title="java的并行编程"></a>java的并行编程</h3><p>并行编程是为了更好的利用现代的处理器是多核的性质</p>
+          java的并行编程并行编程是为了更好的利用现代的处理器是多核的性质
 
           
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/25/浅谈java并发编程/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -572,58 +586,15 @@
       
         
           
-            <h3 id="java-的Stream函数式编程"><a href="#java-的Stream函数式编程" class="headerlink" title="java 的Stream函数式编程"></a>java 的Stream函数式编程</h3><p>这两天学习了一下java的函数式编程，这也是java8的特性，尽管java8增加了lambda表达式，能够实现部分函数式编程的功能（函数式编程简单来说就是对于相同的输入，一定会产生相同的输出，与状态无关，其它知识请查阅相关资料），但是对于这个面向对象的语言来说，这个改动有很多妥协，当然支持的功能也有限。接下来通过介绍java的Stream库来了解java的函数式编程。</p>
-<h4 id="1-怎么产生Stream"><a href="#1-怎么产生Stream" class="headerlink" title="1.怎么产生Stream"></a>1.怎么产生Stream</h4><p>流（Stream）可以看成一个存储数据的仓库，我们只关心需要什么，而不用关心怎么从仓库中得到这些东西。java很多API都能将数据转为Stream，比如我们可能需要得到某个目录下的所有文件（或者目录），那么可以使用<strong> Stream<path></path> </strong>来存储。Stream的产生更多的是通过IO流来得到的。直接调用stream()方法便可得到Stream，当然还可以直接通过调用Stream.of()实现流的构造</p>
-<pre><code>Stream&lt;String&gt; words = Stream.of(&quot;first&quot;,&quot;second&quot;,&quot;third&quot;);
-</code></pre><p>Stream接口还有两个静态方法用来创建流，  <strong> generate(Supplier<t> s) </t></strong>,所以我们可以通过</p>
-<pre><code>Stream&lt;double&gt; random = Stream.generate(Math:random);
-</code></pre><p>来得到随机数。</p>
-<h4 id="2-Stream怎么使用"><a href="#2-Stream怎么使用" class="headerlink" title="2.Stream怎么使用"></a>2.Stream怎么使用</h4><p>Stream里面的提供了很多API来处理流，通过一层的处理最后得到自己想要的流，先上一个实例，比如我需要得到一篇英语文章中的单词的长度大于10的单词的数量，使用filter()可以过滤得到结果。</p>
-<pre><code>int count = words.stream().filter(s -&gt; s.length &gt; 10).count()
-</code></pre><p>这个操作的思路明显，而且我们只需要关注想要的结果就可以了，不用再去写for循环来一个一个查找，<strong> s -&gt; s.length &gt; 10 </strong>就是一个简单的lambda表达式，s代表输入参数，这里就是stream里面的字符串，类型可以由编译器直接推断出来（因为words的类型为String），所有不用显示的指定,<br><strong> -&gt; </strong>是lambda表达式的标记，后面是具体的内容，因为只有一句话，所以没用{}括起来。意思是输出字符串的长度是否大于10，可能会有疑问？怎么看出 <strong> 是否 </strong>的意思呢？看一下filter的参数类型就知道，是一个<strong>Predicate&lt;? super T&gt; predicate</strong>，意思是返回是否满足给定的Predicate条件。最后一个<strong>count()</strong>就是将之前满足条件的全部加起来。这个操作是不是很简单明了，实现的具体实现的部分都是交给编译器自己去完成。</p>
-<p>当然，还有很多选择，过滤的操作，比如<strong>findFirst(),anyMatch()</strong>,这些都能筛选出我们想要的部分。具体的每一个API可以查文档来得到。</p>
-<h4 id="3-怎么得到想要的结果"><a href="#3-怎么得到想要的结果" class="headerlink" title="3.怎么得到想要的结果"></a>3.怎么得到想要的结果</h4><p>我们过滤完之后还是一个流，很多情况下我们<strong>需要的是一个数字或者java的基本类型。比如前面的</strong>count()<strong>操作,Stream里面也有不少这样的方法，我们称之为规约的操作，比如</strong>min(),max(),reduce(),collect()<strong>,其中</strong>reduce(),collect()<strong>的功能很强大，可以得到很多自定义的结果。如果能掌握的话，java函数式编程也就掌握大半了。这里举一个简答的例子，比如我需要求总单词列表的总的字母的数量，采用</strong>reduce()**实现，（当然还有很多简便的方法）</p>
-<pre><code>Optional&lt;Integer&gt; sum = words.stream.reduce((x,y) -&gt; (x.length+y.length))
-</code></pre><p>这里的<strong>Optional<integer></integer></strong>可以简单的看成一个<strong>Integer</strong>，只不过这个类型提供了对<strong>null</strong>值时的保护措施。通过<strong>ifPresent()</strong>方法来选择性的执行。</p>
-<h4 id="4-一个函数式编程具体的例子："><a href="#4-一个函数式编程具体的例子：" class="headerlink" title="4.一个函数式编程具体的例子："></a>4.一个函数式编程具体的例子：</h4><p>能够实现将一个文本的单词读取出来，并且将单词流排序输出到列表当中。</p>
-<pre><code>package com.seanhust.eight;
-import java.io.*;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-public class Question1 {
-    public static void main(String[] args){
-        Path path = FileSystems.getDefault().getPath(&quot;&quot;);
-        List&lt;String&gt; wordsList = new ArrayList&lt;&gt;();
-        wordsList = ReadFileToWords.readFileToWords(path);
-        Stream&lt;String&gt; longString = wordsList.stream().sorted(Comparator.comparing(String::length,Comparator.reverseOrder()));
-        List&lt;String&gt; strings = longString.collect(Collectors.toList());
-    }
-}
-
-class ReadFileToWords{
-    public static List&lt;String&gt; readFileToWords(Path path){
-        List&lt;String&gt; wordsList = new ArrayList&lt;&gt;();
-        try(Scanner scan = new Scanner(path)){
-            while(scan.hasNext()) {
-                String[] line = scan.nextLine().split(&quot;[^a-zA-Z]&quot;);
-                for (String word : line) {
-                    if(!&quot;&quot;.equals(word.trim())) {
-                        wordsList.add(word.trim());
-                    }
-                }
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return wordsList;
-    }
-}
-</code></pre>
-          
+          java 的Stream函数式编程这两天学习了一下java的函数式编程，这也是java8的特性，尽管java8增加了lambda表达式，能够实现部分函数式编程的功能（函数式编程简单来说就是对于相同的输入，一定会产生相同的输出，与状态无关，其它知识请查阅相关资料），但是对于这个面向对象的语言来说，这个
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/24/java的Stream函数式编程/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -741,14 +712,15 @@ class ReadFileToWords{
       
         
           
-            <h3 id="程序员应该知道的97件事系列（一）"><a href="#程序员应该知道的97件事系列（一）" class="headerlink" title="程序员应该知道的97件事系列（一）"></a>程序员应该知道的97件事系列（一）</h3><p>  有没有发现自己写代码经常出现各种各样的小错误，而且一改起来很多地方都要修改。最近在写的一个博客类网站，总是由于命名问题或者小的细节问题改的代码惨不忍睹。偶然看到这本《程序员应该知道的977件事》，里面有很多概括性的建议，先不妨研读一番，思考一下自己的不足，以后在工程中慢慢体会和运用某些建议。本系列感悟分为10集，每集谈谈对其中10篇的感悟（最后一集就是7篇了）。可能有些要点没有领会到位，望批评指正。</p>
-<hr>
-<h4 id="1-谨慎行动"><a href="#1-谨慎行动" class="headerlink" title="1.谨慎行动"></a>1.谨慎行动</h4><p>  有时候我们会为了追求进度从而写一些效率低下，甚至不够严密的代码。这些代码可能现阶段不会影响代码的正确性，但是在下一轮迭代或者一些特定的情况出现一些问题。比如之前在做一个应用时，需要用到图片上传的功能，操作是首先将浏览器上传的图片存到文件目录下中，然后进行一些操作，成功则将图片的URI地址存入数据库中，失败则直接告诉浏览器，很显然缺少了删除的操作，虽然不会造成程序崩溃，但是这是一个很不好的习惯。</p>
-<h4 id="2-函数式编程的原则"><a href="#2-函数式编程的原则" class="headerlink" title="2.函数式编程的原则"></a>2.函数式编程的原则</h4><p>  函数式编程在“多核”编程有比较广泛的应用，函数式编程有一个很重要的属性-引用透明性，即同样的输入会的到同样的输出。过程式的代码最重要的特点就是状态变量很多，由于某一个状态值的改变导致出现问题的情况屡见不鲜。所以使用函数式编程能大大减少这类问题。如若采用面向对象的方法，则因尽量接耦合，并且对变量进行检测，这样不仅在调试的时候能快速定位错误，而且能减少差错。</p>
-<h4 id="3-试试自己-“用户会怎么做”（你不能算是用户）"><a href="#3-试试自己-“用户会怎么做”（你不能算是用户）" class="headerlink" title="3.试试自己 “用户会怎么做”（你不能算是用户）"></a>3.试试自己 “用户会怎么做”（你不能算是用户）</h4><p>  有时候在写一些业务代码的时候，总是容易自以为的假设用户能按自己的想法操作，或者说前端的能够传递给我正确的数据。但是很多次都会因为某些数据不存在或者说没有检测某些数据的合法性导致出现了一系列的问题。当这些数据插进数据库之后很容易导致程序出现异常，然后重新构建数据库是十分麻烦的一件事。特别是服务上线之后，那由于脏数据的插入导致的损失是巨大的。所以在代码尽量检测数据的合法性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if(map.get(&quot;username&quot;) == null)&#123;</span><br><span class="line">      ...</span><br><span class="line">  &#125;else&#123;</span><br><span class="line">      ...</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="4-编码的自动化"><a href="#4-编码的自动化" class="headerlink" title="4.编码的自动化"></a>4.编码的自动化</h4><p>  首先我想说一说前后端的交互问题，前期一定一定要设计的十分清楚，把数据的格式和变量的命名完全统一在编写接口代码，特别不是那种十分正规的项目很容易大概说一下就开始各干各的，等改起来就不是一件轻松事。比如那个博客类网站，采用了MVC的设计，之前一直用的都是直接传与实体类变量相同的json数据，但是前端后来觉得这样受后台命名限制不太好，导致需要重新从request中一个一个将变量读取出来。改成原编码风格的话，需要动的文件很多，所以数据的检测放在control层里面先检测一下，之前都是放在service里面检测。</p>
-
-          
+          程序员应该知道的97件事系列（一）  有没有发现自己写代码经常出现各种各样的小错误，而且一改起来很多地方都要修改。最近在写的一个博客类网站，总是由于命名问题或者小的细节问题改的代码惨不忍睹。偶然看到这本《程序员应该知道的977件事》，里面有很多概括性的建议，先不妨研读一番，思考一下自己的不足，以后在
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/24/程序员应该知道的97件事系列（一）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
