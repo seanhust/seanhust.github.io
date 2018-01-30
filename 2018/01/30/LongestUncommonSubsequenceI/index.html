@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>LongestUncommonSubsequenceI | Sean，点滴</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="先定个小目标，寒假的话大概有二十五天，完成leetcode上面20道题目吧，尽量多涉及些类型。提高一下自己的基础算法。记录与此。 &amp;emsp;然而，第一天打算开始做道String类型的题目，选了一个easy的，题目如下： Given a group of two strings, you need to find the longest uncommon  subsequence of this">
+<meta name="keywords" content="leetcode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LongestUncommonSubsequenceI">
+<meta property="og:url" content="http://seanhust.github.io/2018/01/30/LongestUncommonSubsequenceI/index.html">
+<meta property="og:site_name" content="Sean，点滴">
+<meta property="og:description" content="先定个小目标，寒假的话大概有二十五天，完成leetcode上面20道题目吧，尽量多涉及些类型。提高一下自己的基础算法。记录与此。 &amp;emsp;然而，第一天打算开始做道String类型的题目，选了一个easy的，题目如下： Given a group of two strings, you need to find the longest uncommon  subsequence of this">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-30T15:42:15.556Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LongestUncommonSubsequenceI">
+<meta name="twitter:description" content="先定个小目标，寒假的话大概有二十五天，完成leetcode上面20道题目吧，尽量多涉及些类型。提高一下自己的基础算法。记录与此。 &amp;emsp;然而，第一天打算开始做道String类型的题目，选了一个easy的，题目如下： Given a group of two strings, you need to find the longest uncommon  subsequence of this">
+  
+    <link rel="alternate" href="/atom.xml" title="Sean，点滴" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sean，点滴</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录生活，记录世界</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://seanhust.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-LongestUncommonSubsequenceI" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/30/LongestUncommonSubsequenceI/" class="article-date">
+  <time datetime="2018-01-30T15:02:54.000Z" itemprop="datePublished">2018-01-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      LongestUncommonSubsequenceI
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="先定个小目标，寒假的话大概有二十五天，完成leetcode上面20道题目吧，尽量多涉及些类型。提高一下自己的基础算法。记录与此。"><a href="#先定个小目标，寒假的话大概有二十五天，完成leetcode上面20道题目吧，尽量多涉及些类型。提高一下自己的基础算法。记录与此。" class="headerlink" title="先定个小目标，寒假的话大概有二十五天，完成leetcode上面20道题目吧，尽量多涉及些类型。提高一下自己的基础算法。记录与此。"></a>先定个小目标，寒假的话大概有二十五天，完成leetcode上面20道题目吧，尽量多涉及些类型。提高一下自己的基础算法。记录与此。</h4><hr>
+<p>&emsp;然而，第一天打算开始做道String类型的题目，选了一个easy的，题目如下：</p>
+<pre><code>Given a group of two strings, you need to find the longest uncommon 
+subsequence of this group of two strings. The longest uncommon subsequence 
+is defined as the longest subsequence of one of these strings and this 
+subsequence should not be any subsequence of the other strings.
+
+A subsequence is a sequence that can be derived from one sequence by 
+deleting some characters without changing the order of the remaining 
+elements. Trivially, any string is a subsequence of itself and an empty 
+string is a subsequence of any string.
+
+The input will be two strings, and the output needs to be the length of 
+the longest uncommon subsequence. If the longest uncommon subsequence 
+doesn&apos;t exist, return -1.
+
+Example 1:
+Input: &quot;aba&quot;, &quot;cdc&quot;
+Output: 3
+Explanation: The longest uncommon subsequence is &quot;aba&quot; (or &quot;cdc&quot;), 
+because &quot;aba&quot; is a subsequence of &quot;aba&quot;, 
+but not a subsequence of any other strings in the group of two strings. 
+Note:
+
+Both strings&apos; lengths will not exceed 100.
+Only letters from a ~ z will appear in input strings.
+</code></pre><p>不得不说，这道题目真的让我大跌眼睛，思路简单到爆，然后花了一分钟写完了代码。</p>
+<pre><code>public class Solution {
+    public int findLUSlength(String a, String b) {
+        if(a.length() != b.length()){
+            return a.length() &gt; b.length()?a.length():b.length();
+        }
+        if(a.equals(b)){
+            return -1;
+        }
+        return a.length();
+    }
+}
+</code></pre><p>&emsp;说明如果两个字符长度不等，则返回长的字符串的长度，如果两个字符串相等，返回-1，然后剩下一种情况就是长度相等，但是字符串不相等，返回其中一个的长度即可，我是想判断长度的耗时肯定判断字符串相等短，所以先判断了长度是否相等。这就结束了。</p>
+<p>&emsp;看了一下别人的方法，有增加了 <strong>null</strong>判断的。其余的可能就是换汤不换药的写法。总之这道题当做开胃菜吧。这道题的评价很低，大部分都是unlike。也提醒我下次选题也稍微注意一下这个。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://seanhust.github.io/2018/01/30/LongestUncommonSubsequenceI/" data-id="cjd1tb6pb0000ik7s1hensf14" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/leetcode/">leetcode</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/12/25/tcpdump的简易教程/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">tcpdump的简易教程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/30/LongestUncommonSubsequenceI/">LongestUncommonSubsequenceI</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/25/tcpdump的简易教程/">tcpdump的简易教程</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/22/java的Stream函数式编程/">java 的Stream函数式编程.md</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Sean<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

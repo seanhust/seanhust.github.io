@@ -69,6 +69,84 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LongestUncommonSubsequenceI" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/30/LongestUncommonSubsequenceI/" class="article-date">
+  <time datetime="2018-01-30T15:02:54.000Z" itemprop="datePublished">2018-01-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/30/LongestUncommonSubsequenceI/">LongestUncommonSubsequenceI</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="先定个小目标，寒假的话大概有二十五天，完成leetcode上面20道题目吧，尽量多涉及些类型。提高一下自己的基础算法。记录与此。"><a href="#先定个小目标，寒假的话大概有二十五天，完成leetcode上面20道题目吧，尽量多涉及些类型。提高一下自己的基础算法。记录与此。" class="headerlink" title="先定个小目标，寒假的话大概有二十五天，完成leetcode上面20道题目吧，尽量多涉及些类型。提高一下自己的基础算法。记录与此。"></a>先定个小目标，寒假的话大概有二十五天，完成leetcode上面20道题目吧，尽量多涉及些类型。提高一下自己的基础算法。记录与此。</h4><hr>
+<p>&emsp;然而，第一天打算开始做道String类型的题目，选了一个easy的，题目如下：</p>
+<pre><code>Given a group of two strings, you need to find the longest uncommon 
+subsequence of this group of two strings. The longest uncommon subsequence 
+is defined as the longest subsequence of one of these strings and this 
+subsequence should not be any subsequence of the other strings.
+
+A subsequence is a sequence that can be derived from one sequence by 
+deleting some characters without changing the order of the remaining 
+elements. Trivially, any string is a subsequence of itself and an empty 
+string is a subsequence of any string.
+
+The input will be two strings, and the output needs to be the length of 
+the longest uncommon subsequence. If the longest uncommon subsequence 
+doesn&apos;t exist, return -1.
+
+Example 1:
+Input: &quot;aba&quot;, &quot;cdc&quot;
+Output: 3
+Explanation: The longest uncommon subsequence is &quot;aba&quot; (or &quot;cdc&quot;), 
+because &quot;aba&quot; is a subsequence of &quot;aba&quot;, 
+but not a subsequence of any other strings in the group of two strings. 
+Note:
+
+Both strings&apos; lengths will not exceed 100.
+Only letters from a ~ z will appear in input strings.
+</code></pre><p>不得不说，这道题目真的让我大跌眼睛，思路简单到爆，然后花了一分钟写完了代码。</p>
+<pre><code>public class Solution {
+    public int findLUSlength(String a, String b) {
+        if(a.length() != b.length()){
+            return a.length() &gt; b.length()?a.length():b.length();
+        }
+        if(a.equals(b)){
+            return -1;
+        }
+        return a.length();
+    }
+}
+</code></pre><p>&emsp;说明如果两个字符长度不等，则返回长的字符串的长度，如果两个字符串相等，返回-1，然后剩下一种情况就是长度相等，但是字符串不相等，返回其中一个的长度即可，我是想判断长度的耗时肯定判断字符串相等短，所以先判断了长度是否相等。这就结束了。</p>
+<p>&emsp;看了一下别人的方法，有增加了 <strong>null</strong>判断的。其余的可能就是换汤不换药的写法。总之这道题当做开胃菜吧。这道题的评价很低，大部分都是unlike。也提醒我下次选题也稍微注意一下这个。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://seanhust.github.io/2018/01/30/LongestUncommonSubsequenceI/" data-id="cjd1tb6pb0000ik7s1hensf14" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/leetcode/">leetcode</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-tcpdump的简易教程" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/12/25/tcpdump的简易教程/" class="article-date">
@@ -145,7 +223,7 @@ listening on wlp8s0, link-type EN10MB (Ethernet), capture size 262144 bytes
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://seanhust.github.io/2017/12/25/tcpdump的简易教程/" data-id="cjd1smjy70001617sp073j50q" class="article-share-link">Share</a>
+      <a data-url="http://seanhust.github.io/2017/12/25/tcpdump的简易教程/" data-id="cjd1tb6pj0003ik7s9rcpow0x" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -233,7 +311,7 @@ class ReadFileToWords{
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://seanhust.github.io/2017/11/22/java的Stream函数式编程/" data-id="cjd1smjy30000617sxb0u34y8" class="article-share-link">Share</a>
+      <a data-url="http://seanhust.github.io/2017/11/22/java的Stream函数式编程/" data-id="cjd1tb6pg0001ik7spwkr8pbo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
@@ -257,7 +335,7 @@ class ReadFileToWords{
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li></ul>
     </div>
   </div>
 
@@ -267,7 +345,7 @@ class ReadFileToWords{
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a>
+      <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a>
     </div>
   </div>
 
@@ -276,7 +354,7 @@ class ReadFileToWords{
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
     </div>
   </div>
 
@@ -287,6 +365,10 @@ class ReadFileToWords{
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/01/30/LongestUncommonSubsequenceI/">LongestUncommonSubsequenceI</a>
+          </li>
         
           <li>
             <a href="/2017/12/25/tcpdump的简易教程/">tcpdump的简易教程</a>
