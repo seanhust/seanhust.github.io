@@ -69,6 +69,140 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-DecodeString394" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/02/DecodeString394/" class="article-date">
+  <time datetime="2018-02-02T11:33:38.000Z" itemprop="datePublished">2018-02-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/02/DecodeString394/">DecodeString394</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;今天的选了一道关于栈的题。这道题的质量不错，很喜欢这道题，先把题目贴出来啦。</p>
+<pre><code>#394
+Given an encoded string, return it&apos;s decoded string.
+The encoding rule is: k[encoded_string], where the encoded_string inside 
+the square brackets is being repeated exactly k times.
+Note that k is guaranteed to be a positive integer.
+
+You may assume that the input string is always valid; 
+No extra white spaces, square brackets are well-formed, etc.
+
+Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there won&apos;t be input like 3a or 2[4].
+
+Examples:
+
+s = &quot;3[a]2[bc]&quot;, return &quot;aaabcbc&quot;.
+s = &quot;3[a2[c]]&quot;, return &quot;accaccacc&quot;.
+s = &quot;2[abc]3[cd]ef&quot;, return &quot;abcabccdcdcdef&quot;.
+</code></pre><p>&emsp;接下来谈谈我思考这道题的过程。看完这道题之后，觉得和由算式得到其逆波兰表达式的过程类似。所以也是毫不犹豫选择了用栈来实现 <strong>decodeString</strong>。使用两个栈，一个用来存数字，一个用来存字符串。接下来从头开始遍历字符串。如果遇到了数字，那么就把数字压如入数字栈中，如果出现了字符串，就将字符串压入字符串栈中，如果出现了 <strong>[</strong>  ，那么直接将其压入字符串栈中，其作用就是确定数字对于哪些字符串有效。遇到 <strong>]</strong> 则执行重复字符串运算，将字符串栈的字符串取出拼接，重复 <strong>n次</strong>并将结果压入字符串栈中。这里需要注意的一个小细节就是字符串的顺序要和字符串从栈中弹出的顺序相反。<br>&emsp;当遍历完之后，字符串栈中还有不定数量的字符串，将其弹出，拼接即可，这里也要注意顺序。接下来就上我的代码了。</p>
+<pre><code>public String decodeString(String s) {
+    Stack&lt;Integer&gt; numberStack = new Stack&lt;&gt;();
+    Stack&lt;String&gt; stringStack = new Stack&lt;&gt;();
+    int startIndex;
+    for(int i = 0;i&lt;s.length();i++){
+        if(Character.isDigit(s.charAt(i))){
+            startIndex = i;
+            while(Character.isDigit(s.charAt(i + 1))){
+                i++;
+            }
+            numberStack.push(Integer.valueOf(s.substring(startIndex,i + 1)));
+        }else if(s.charAt(i) == &apos;[&apos;){
+            stringStack.push(&quot;[&quot;);
+        }else if(s.charAt(i) == &apos;]&apos;){
+            int number = numberStack.pop();
+            StringBuilder stringBuilder = new StringBuilder(8);
+            Stack&lt;String&gt; tempInverseString = new Stack&lt;&gt;();
+            while(!&quot;[&quot;.equals(stringStack.peek())){
+                tempInverseString.push(stringStack.pop());
+            }
+            stringStack.pop();
+            while(!tempInverseString.empty()){
+                stringBuilder.append(tempInverseString.pop());
+            }
+            StringBuilder stringToStack = new StringBuilder((number+1)*stringBuilder.length());
+            for(int j = 0; j &lt; number;j++){
+                stringToStack.append(stringBuilder);
+            }
+            stringStack.push(stringToStack.toString());
+        }else if(Character.isAlphabetic(s.charAt(i))){
+            startIndex = i;
+            while(i &lt; s.length()&amp;&amp;Character.isAlphabetic(s.charAt(i))){
+                i++;
+            }
+            stringStack.push(s.substring(startIndex,i));
+            i --;
+        }
+    }
+    Stack&lt;String&gt; inverseString = new Stack&lt;&gt;();
+    StringBuilder resultString = new StringBuilder(16);
+    while(!stringStack.empty()){
+        inverseString.push(stringStack.pop());
+    }
+    while(!inverseString.empty()){
+        resultString.append(inverseString.pop());
+    }
+    return resultString.toString();
+}
+</code></pre><p>&emsp;上面就是第一版本的代码。上面将字符串逆序拼接的过程是使用了一个中间栈来实现的。避免了插入字符串的低效操作。但是问题是这样逆序拼接字符串的操作感觉像是可以避免的。然后我想了想，为什么一定要将切割的字符串和的得到结果的字符串压栈了，其实我可以等到过了这个字符串的生存期再压入栈中，意思就是当出现了 <strong>[</strong> 的时候，表明现在的重复运算不需要当前的字符串了，而当出现 <strong>]</strong> 时，只需将栈顶的字符串取出即可。接下来就是改写之后的代码了。</p>
+<pre><code>public String decodeString(String s) {
+    Stack&lt;Integer&gt; numberStack = new Stack&lt;&gt;();
+    String res = &quot;&quot;;
+    Stack&lt;String&gt; stringStack = new Stack&lt;&gt;();
+    int startIndex;
+    for(int i = 0;i&lt;s.length();i++){
+        if(Character.isDigit(s.charAt(i))){
+            startIndex = i;
+            while(Character.isDigit(s.charAt(i + 1))){
+                i++;
+            }
+            numberStack.push(Integer.valueOf(s.substring(startIndex,i + 1)));
+        }else if(s.charAt(i) == &apos;[&apos;){
+            stringStack.push(res);
+            res = &quot;&quot;;
+        }else if(s.charAt(i) == &apos;]&apos;){
+            int number = numberStack.pop();
+            StringBuilder stringBuilder = new StringBuilder(stringStack.pop());
+            for(int j = 0; j &lt; number;j++){
+                stringBuilder.append(res);
+            }
+            res = stringBuilder.toString();
+        }else if(Character.isAlphabetic(s.charAt(i))){
+            res += s.charAt(i);
+        }
+    }
+    return res;
+}
+</code></pre><p>&emsp;速度由原先的6ms优化到了4ms，由原先的超过10%到超过32%。代码量几乎减少了一半，也算一个不小的优化。然后看了一下那些大神的解法，有采用递归来实现的。代码真的短小精悍，效率也不错的。<br>&emsp;前路漫漫，继续coding。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://seanhust.github.io/2018/02/02/DecodeString394/" data-id="cjd5wjubw0000q47sgi3xy2kt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/leetcode/">leetcode</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-LongestUncommonSubsequenceI" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/01/30/LongestUncommonSubsequenceI/" class="article-date">
@@ -135,7 +269,7 @@ Only letters from a ~ z will appear in input strings.
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://seanhust.github.io/2018/01/30/LongestUncommonSubsequenceI/" data-id="cjd1tb6pb0000ik7s1hensf14" class="article-share-link">Share</a>
+      <a data-url="http://seanhust.github.io/2018/01/30/LongestUncommonSubsequenceI/" data-id="cjd5wjuc10001q47so4akjeg7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/leetcode/">leetcode</a></li></ul>
@@ -223,7 +357,7 @@ listening on wlp8s0, link-type EN10MB (Ethernet), capture size 262144 bytes
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://seanhust.github.io/2017/12/25/tcpdump的简易教程/" data-id="cjd1tb6pj0003ik7s9rcpow0x" class="article-share-link">Share</a>
+      <a data-url="http://seanhust.github.io/2017/12/25/tcpdump的简易教程/" data-id="cjd5wjuc50004q47s4tm31087" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -311,7 +445,7 @@ class ReadFileToWords{
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://seanhust.github.io/2017/11/22/java的Stream函数式编程/" data-id="cjd1tb6pg0001ik7spwkr8pbo" class="article-share-link">Share</a>
+      <a data-url="http://seanhust.github.io/2017/11/22/java的Stream函数式编程/" data-id="cjd5wjuc40003q47si1fumfwp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
@@ -345,7 +479,7 @@ class ReadFileToWords{
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a>
+      <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/leetcode/" style="font-size: 20px;">leetcode</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a>
     </div>
   </div>
 
@@ -354,7 +488,7 @@ class ReadFileToWords{
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
     </div>
   </div>
 
@@ -365,6 +499,10 @@ class ReadFileToWords{
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/02/02/DecodeString394/">DecodeString394</a>
+          </li>
         
           <li>
             <a href="/2018/01/30/LongestUncommonSubsequenceI/">LongestUncommonSubsequenceI</a>
